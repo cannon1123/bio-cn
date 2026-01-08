@@ -477,4 +477,81 @@ body::after {
         /* display: none; */
         transform: translate(-50%, -50%) translateZ(-800px) scale(0.8); /* Odsunięcie rzutnika dalej */
     }
+    /* --- DOPISZ TO NA KOŃCU SWOJEGO STYLE.CSS --- */
+
+.dynamic-nick {
+    font-size: 28px;
+    background: linear-gradient(90deg, #00d9ff, #ff00ea, #00d9ff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
+    letter-spacing: 2px;
+}
+
+@keyframes shine {
+    to { background-position: 200% center; }
+}
+
+.bio-info {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.main-text {
+    font-size: 13px;
+    color: #fff;
+    line-height: 1.4;
+}
+
+.sub-text {
+    font-size: 10px;
+    color: #888;
+    margin-top: 5px;
+    text-transform: uppercase;
+}
+
+.section-box {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.section-box label {
+    font-size: 9px;
+    color: #00d9ff;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.grid-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.project-item {
+    background: rgba(0, 217, 255, 0.05);
+    border-left: 2px solid #00d9ff;
+    padding: 6px 10px;
+    font-size: 11px;
+}
+
+.project-name { color: #00d9ff; font-weight: bold; }
+.project-status { color: #666; font-size: 9px; }
+
+.social-btn {
+    font-size: 10px;
+    color: #00d9ff;
+    text-decoration: none;
+    border: 1px solid rgba(0, 217, 255, 0.3);
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.social-btn:hover {
+    background: rgba(0, 217, 255, 0.2);
+    box-shadow: 0 0 10px #00d9ff;
+}
 }

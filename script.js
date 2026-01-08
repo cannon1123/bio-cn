@@ -2,10 +2,10 @@
 // SYMULACJA DANYCH Z BAZY (Normalnie tu byłoby połączenie z Supabase)
 // =================================================================
 const mockUserData = {
-    nick: "NEXUS_GHOST",
+    nick: "⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠",
     role: "LVL.4 SECURITY RESEARCHER",
-    bio: "Specjalista ds. cyberbezpieczeństwa i ciemnych interfejsów. Tworzę rzeczy, które wyglądają jak z roku 2077.",
-    subInfo: "Status: Online | Lokalizacja: Encrypted Node | Ostatnia aktywność: 2min temu",
+    bio: "Jestem początkującym programistą, który robi strony i programy hobbystycznie. Chętnie podejmę się stworzenia strony na zamówienie dla zainteresowanych osób!",
+    subInfo: "Dostępny na zlecenia | C++ / HTML / CSS / JS",
     projects: [
         { name: "HoloAuth System", status: "Verified (5/5 Stars)" },
         { name: "Neon Database", status: "In Progress..." },
