@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Holographic Bio Interface</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="scene">
+      <div class="projector-device">
+        <div class="projector-lens"></div>
+        <div class="projector-body"></div>
+      </div>
+
+      <div class="light-beam light-beam-0"></div>
+      <div class="light-beam light-beam-1"></div>
+      <div class="light-beam light-beam-2"></div>
+      <div class="light-beam light-beam-3"></div>
+      <div class="light-beam light-beam-4"></div>
+      <div class="light-beam light-beam-5"></div>
+      <div class="light-beam light-beam-6"></div>
+      <div class="light-beam light-beam-7"></div>
+      <div class="light-beam light-beam-8"></div>
+      <div class="light-beam light-beam-final"></div>
+
+      <div class="login-card bio-mode">
+        <div class="scan-line"></div>
+
+        <div class="card-content">
+          <div class="title bio-title-section">
+            <h1 class="bio-nick-highlight" id="user-nick">INITIALIZING...</h1>
+            <p id="user-role">SYSTEM UNKNOWN</p>
+          </div>
+
+          <div class="bio-details">
+            <p class="main-bio-text" id="bio-text">
+              <span class="loading-dots">Waiting for data stream</span>
+            </p>
+            <p class="sub-bio-text" id="sub-info">...</p>
+          </div>
+
+          <button type="button" class="btn-login" id="activeCardBtn">
+            <span>► ACTIVE CARD ACCESS</span>
+          </button>
+
+          <div class="bio-section-container">
+            <label class="section-label">LATEST PROJECTS</label>
+            <div class="projects-grid" id="projects-list">
+               </div>
+          </div>
+
+          <div class="links social-links-container" id="social-links">
+             </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
