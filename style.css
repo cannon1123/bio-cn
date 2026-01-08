@@ -554,4 +554,71 @@ body::after {
     background: rgba(0, 217, 255, 0.2);
     box-shadow: 0 0 10px #00d9ff;
 }
+/* --- SPOTIFY WIDGET --- */
+.spotify-container {
+    margin: 20px 0;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 217, 255, 0.3);
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* --- NOWE SOCIAL MEDIA (DOCK) --- */
+.social-dock {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    background: rgba(10, 25, 45, 0.6);
+    border: 1px solid rgba(0, 217, 255, 0.4);
+    color: #00d9ff;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    position: relative;
+}
+
+.icon-btn svg {
+    width: 22px;
+    fill: #00d9ff;
+    flex-shrink: 0;
+    transition: 0.3s;
+}
+
+.icon-btn span {
+    width: 0;
+    opacity: 0;
+    white-space: nowrap;
+    transition: 0.4s;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+/* Animacja rozszerzania */
+.icon-btn:hover {
+    width: 130px;
+    background: rgba(0, 217, 255, 0.15);
+    border-color: #00d9ff;
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+}
+
+.icon-btn:hover span {
+    width: auto;
+    opacity: 1;
+    margin-left: 10px;
+}
+
+.icon-btn:hover svg {
+    fill: #fff;
+}
 }
