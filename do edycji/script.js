@@ -29,28 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         populateBioData();
     }, 2500);
 
-    // Obsługa przycisku "ACTIVE CARD" - adaptacja logiki z oryginalnego logowania
-    const activeBtn = document.getElementById("activeCardBtn");
-    activeBtn.addEventListener("click", function () {
-        
-        // Zmiana wyglądu przycisku na "Sukces" (zielony kolor z oryginału)
-        this.style.background = "linear-gradient(135deg, #00ff88 0%, #00ffaa 100%)";
-        this.innerHTML = "<span>✓ ACCESSING CARD...</span>";
-        this.style.boxShadow = "0 0 50px rgba(0, 255, 136, 0.8)";
-        this.style.transform = "translateY(-2px)";
 
-        // Symulacja przekierowania po 1.5 sekundy
-        setTimeout(() => {
-             // Tutaj nastąpi prawdziwe przekierowanie
-             console.log("Redirecting to presentation page...");
-             // window.location.href = 'prezentacja.html'; 
-             
-             // (Opcjonalnie dla testu) Reset przycisku
-             this.style.background = "linear-gradient(135deg, #0088ff 0%, #00d9ff 100%)";
-             this.innerHTML = "<span>► ACTIVE CARD ACCESS</span>";
-             this.style.boxShadow = "0 0 30px rgba(0, 217, 255, 0.4)";
-        }, 1500);
-    });
 });
 
 
