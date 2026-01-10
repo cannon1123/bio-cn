@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>logowanie </title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="scene">
+      <div class="projector-device">
+        <div class="projector-lens"></div>
+        <div class="projector-body"></div>
+      </div>
+
+      <div class="light-beam light-beam-0"></div>
+      <div class="light-beam light-beam-1"></div>
+      <div class="light-beam light-beam-2"></div>
+      <div class="light-beam light-beam-3"></div>
+      <div class="light-beam light-beam-4"></div>
+      <div class="light-beam light-beam-5"></div>
+      <div class="light-beam light-beam-6"></div>
+      <div class="light-beam light-beam-7"></div>
+      <div class="light-beam light-beam-8"></div>
+      <div class="light-beam light-beam-final"></div>
+
+      <div class="login-card">
+        <div class="scan-line"></div>
+
+        <div class="card-content">
+          <div class="title">
+            <h1>ZALOGUJ SIĘ</h1>
+            <p>zaloguj się aby otrzymaćdostęp do panelu</p>
+          </div>
+
+          <form id="loginForm">
+            <div class="input-group">
+              <label>NAZWA</label>
+              <input
+                type="text"
+                id="username"
+                placeholder="napisz swoją nazwe..."
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="input-group">
+              <label>HASŁO</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Security code..."
+                autocomplete="off"
+              />
+            </div>
+
+            <button type="button" class="btn-login" id="loginBtn">
+              <span>► LOGIN</span>
+            </button>
+
+            <div class="links">
+              <a href="#">nie pamiętasz hasła?</a>
+              <a href="#">zarejerstruj się</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
