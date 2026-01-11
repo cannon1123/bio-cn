@@ -1,17 +1,38 @@
 // Lista folderów z projektami
+// Lista folderów z projektami
 const projectFolders = [
-    { id: "streaminghub", name: "STREAMINGHUB", desc: "Aplikacja webowa do streamingu treści z wykorzystaniem JavaScript i SQL." },
-    { id: "soon", name: "soon", desc: "soon" },
-    { id: "soon", name: "soon", desc: "soon" }
+    { 
+        id: "streaminghub", 
+        name: "STREAMINGHUB", 
+        desc: "Aplikacja webowa do streamingu treści.", 
+        // Tutaj podajesz dokładną ścieżkę do obrazka:
+        img: "streaminghub/screen/screen1.png" 
+    },
+    { 
+        id: "soon", 
+        name: "SOON", 
+        desc: "Wkrótce...", 
+        // Przykład innej ścieżki, o którą pytałeś:
+        img: "https://via.placeholder.com/300x150?text=SOON" 
+    },
+    { 
+        id: "soon", 
+        name: "SOON", 
+        desc: "Wkrótce...", 
+        // Możesz też dać link do placeholder'a:
+        img: "https://via.placeholder.com/300x150?text=SOON" 
+    }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('projects-grid');
     
     projectFolders.forEach(folder => {
-        // Ścieżka do miniatury: folder/screens/screen1.png
-        const thumbUrl = `${folder.id}/screens/screen1.png`;
-        // Ścieżka do podstrony projektu: folder/index.html
+        // ZMIANA: Pobieramy ścieżkę obrazka z definicji obiektu (folder.img)
+        // Jeśli nie podano img, używamy starej metody jako zapasowej
+        const thumbUrl = folder.img ? folder.img : `${folder.id}/screen/screen1.png`;
+        
+        // Link do projektu pozostaje bez zmian (chyba że też chcesz go ręcznie ustawiać)
         const projectLink = `${folder.id}/index.html`;
 
         const card = document.createElement('a');
