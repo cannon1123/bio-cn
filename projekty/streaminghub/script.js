@@ -11,7 +11,7 @@ const projectConfig = {
     // Tutaj wpisz ścieżkę do folderu. 
     // Jeśli zdjęcia są w tym samym folderze w katalogu 'screens', zostaw "screens/"
     // Jeśli są gdzie indziej, wpisz np. "/projekty/streaminghub/screen/"
-    screenshotsPath: "/screen/", 
+    screenshotsPath: "/projekty/streaminghub/screen/", 
     
     totalScreenshots: 6,
     fileExtension: "png"
@@ -56,7 +56,18 @@ function generateGallery() {
             wrapper.classList.add('hidden-screen');
         }
 
-        const img = document.createElement('img');
+       const img = document.createElement('img');
+
+// Pobieramy ścieżkę z configu. Jeśli jej nie wpiszesz, domyślnie szuka w "screens/"
+let folderPath = projectConfig.screenshotsPath || "screens/";
+
+// Upewniamy się, że ścieżka kończy się znakiem /
+if (!folderPath.endsWith('/')) {
+    folderPath += '/';
+}
+
+// Łączymy ścieżkę z nazwą pliku
+img.src = `${folderPath}screen${i}.${projectConfig.fileExtension}`;
         
         
         // 1. Pobieramy ścieżkę z configu (lub używamy domyślnej 'screens/')
