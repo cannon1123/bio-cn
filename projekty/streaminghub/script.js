@@ -1,5 +1,5 @@
 // =================================================================
-// 🔧 KONFIGURACJA PROJEKTU (EDYTUJ TYLKO TO DLA KAŻDEGO FOLDERU)
+// 🔧 KONFIGURACJA PROJEKTU
 // =================================================================
 const projectConfig = {
     title: "streaminghub",
@@ -10,8 +10,8 @@ const projectConfig = {
     // USTAWIENIA ZDJĘĆ
     // Tutaj wpisz ścieżkę do folderu. 
     // Jeśli zdjęcia są w tym samym folderze w katalogu 'screens', zostaw "screens/"
-    // Jeśli są gdzie indziej, wpisz np. "/projekty/projekt2/screen/"
-    screenshotsPath: "/projekty/projekt2/screen/", 
+    // Jeśli są gdzie indziej, wpisz np. "/projekty/streaminghub/screen/"
+    screenshotsPath: "/projekty/streaminghub/screen/", 
     
     totalScreenshots: 6,
     fileExtension: "png"
