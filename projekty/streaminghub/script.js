@@ -96,7 +96,7 @@ img.src = `${folderPath}screen${i}.${projectConfig.fileExtension}`;
     }
 
     // 3. Obsługa przycisku "Pokaż więcej"
-    if (projectConfig.totalScreenshots > 3) {
+    if (projectConfig.totalScreenshots > 1) {
         showMoreBtn.style.display = 'block';
         
         showMoreBtn.addEventListener('click', function() {
