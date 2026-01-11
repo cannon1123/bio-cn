@@ -66,15 +66,19 @@ function populateBioData() {
     // Generowanie kafelków projektów
     const projectsContainer = document.getElementById('projects-list');
     projectsContainer.innerHTML = ''; // Wyczyszczenie placeholderów
-    mockUserData.projects.forEach(proj => {
-        const card = document.createElement('div');
-        card.className = 'project-card';
-        card.innerHTML = `
-            <div class="project-title">${proj.name}</div>
-            <div class="project-status">${proj.status}</div>
-        `;
-        projectsContainer.appendChild(card);
-    });
+mockUserData.projects.forEach(proj => {
+    // Tworzymy link zamiast div-a
+    const card = document.createElement('a'); 
+    card.className = 'project-card';
+    card.href = proj.url; // Dodajemy adres docelowy
+    card.style.textDecoration = 'none'; // Usuwamy podkreślenie linku
+    
+    card.innerHTML = `
+        <div class="project-title">${proj.name}</div>
+        <div class="project-status" style="color: #00ff88;">${proj.status}</div>
+    `;
+    projectsContainer.appendChild(card);
+});
 
     // Generowanie linków social media
     const socialsContainer = document.getElementById('social-links');
