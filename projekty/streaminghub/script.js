@@ -2,15 +2,14 @@
 // 🔧 KONFIGURACJA PROJEKTU (EDYTUJ TYLKO TO DLA KAŻDEGO FOLDERU)
 // =================================================================
 const projectConfig = {
-    title: "NEON DATABASE",          // Nazwa projektu
-    status: "VERSION 1.0 [STABLE]",  // Status (np. W Budowie, Ukończony)
+    title: "streaminghub",          // Nazwa projektu
+    status: "VERSION 2.5 [STABLE]",  // Status (np. W Budowie, Ukończony)
     description: `
-        To jest przykładowy opis projektu. Tutaj wpisz, o czym jest Twój program.
-        Możesz używać znaczników HTML, np. <br> dla nowej linii.
-        Projekt został napisany w C++ i wykorzystuje biblioteki kryptograficzne.
-        Główne cechy to szybkość działania i cybernetyczny interfejs.
+        StreamingHub to projekt strony internetowej do oglądania filmów online za darmo. Aplikacja wykorzystuje relacyjną bazę danych SQL do przechowywania i zarządzania danymi filmów (tytuły, opisy, kategorie). Warstwa frontendowa została zrealizowana z użyciem JavaScript, zapewniając dynamiczne ładowanie treści oraz interaktywny interfejs użytkownika. Projekt łączy logikę backendową z bazą danych, skupiając się na wydajności, czytelności kodu oraz łatwej nawigacji.
+
+⚠️ Uwaga: Strona może automatycznie przejść w tryb uśpienia lub zostać tymczasowo wyłączona po dłuższym okresie nieaktywności (np. około tygodnia), co wynika z ograniczeń hostingowych, a nie błędów aplikacji.
     `,
-    projectUrl: "https://github.com/TwojNick/NazwaProjektu", // Link do przycisku
+    projectUrl: "https://streaminghub.cnhub.pl", // Link do przycisku
     
     // USTAWIENIA ZDJĘĆ
     // Skrypt szuka zdjęć w folderze "screens" o nazwach: screen1.png, screen2.png itd.
