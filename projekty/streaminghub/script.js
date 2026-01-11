@@ -2,19 +2,19 @@
 // 🔧 KONFIGURACJA PROJEKTU (EDYTUJ TYLKO TO DLA KAŻDEGO FOLDERU)
 // =================================================================
 const projectConfig = {
-    title: "streaminghub",          // Nazwa projektu
-    status: "VERSION 2.5 [STABLE]",  // Status (np. W Budowie, Ukończony)
-    description: `
-        StreamingHub to projekt strony internetowej do oglądania filmów online za darmo. Aplikacja wykorzystuje relacyjną bazę danych SQL do przechowywania i zarządzania danymi filmów (tytuły, opisy, kategorie). Warstwa frontendowa została zrealizowana z użyciem JavaScript, zapewniając dynamiczne ładowanie treści oraz interaktywny interfejs użytkownika. Projekt łączy logikę backendową z bazą danych, skupiając się na wydajności, czytelności kodu oraz łatwej nawigacji.
-
-⚠️ Uwaga: Strona może automatycznie przejść w tryb uśpienia lub zostać tymczasowo wyłączona po dłuższym okresie nieaktywności (np. około tygodnia), co wynika z ograniczeń hostingowych, a nie błędów aplikacji.
-    `,
-    projectUrl: "https://streaminghub.cnhub.pl", // Link do przycisku
+    title: "streaminghub",
+    status: "VERSION 2.5 [STABLE]",
+    description: `StreamingHub to projekt strony internetowej do oglądania filmów online za darmo. Aplikacja wykorzystuje relacyjną bazę danych SQL do przechowywania i zarządzania danymi filmów (tytuły, opisy, kategorie). Warstwa frontendowa została zrealizowana z użyciem JavaScript, zapewniając dynamiczne ładowanie treści oraz interaktywny interfejs użytkownika. Projekt łączy logikę backendową z bazą danych, skupiając się na wydajności, czytelności kodu oraz łatwej nawigacji. ⚠️ Uwaga: Strona może automatycznie przejść w tryb uśpienia lub zostać tymczasowo wyłączona po dłuższym okresie nieaktywności (np. około tygodnia), co wynika z ograniczeń hostingowych, a nie błędów aplikacji.`,
+    projectUrl: "https://streaminghub.cnhub.pl",
     
     // USTAWIENIA ZDJĘĆ
-    // Skrypt szuka zdjęć w folderze "screens" o nazwach: screen1.png, screen2.png itd.
-    totalScreenshots: 6,   // Ile masz łącznie zdjęć w folderze screens?
-    fileExtension: "png"   // Czy zdjęcia to .png czy .jpg?
+    // Tutaj wpisz ścieżkę do folderu. 
+    // Jeśli zdjęcia są w tym samym folderze w katalogu 'screens', zostaw "screens/"
+    // Jeśli są gdzie indziej, wpisz np. "/projekty/projekt2/screen/"
+    screenshotsPath: "/projekty/projekt2/screen/", 
+    
+    totalScreenshots: 6,
+    fileExtension: "png"
 };
 
 // =================================================================
@@ -47,27 +47,37 @@ function generateGallery() {
     container.innerHTML = '';
 
     // Pętla tworząca zdjęcia
+// Pętla tworząca zdjęcia (ok. linii 50)
     for (let i = 1; i <= projectConfig.totalScreenshots; i++) {
-        // Tworzymy wrapper
         const wrapper = document.createElement('div');
         wrapper.className = 'screenshot-container';
 
-        // Jeśli to 4. lub kolejne zdjęcie, dodaj klasę ukrywającą
         if (i > 3) {
             wrapper.classList.add('hidden-screen');
         }
 
-        // Tworzymy obrazek
-        // Ścieżka: ./screens/screen1.png
         const img = document.createElement('img');
-        img.src = `screens/screen${i}.${projectConfig.fileExtension}`;
+        
+        
+        // 1. Pobieramy ścieżkę z configu (lub używamy domyślnej 'screens/')
+        let path = projectConfig.screenshotsPath || "screens/";
+        
+        // 2. Jeśli zapomniałeś o ukośniku na końcu, dodajemy go automatycznie
+        if (!path.endsWith('/')) {
+            path += '/';
+        }
+
+        // 3. Sklejamy całość: ścieżka + nazwa pliku + rozszerzenie
+        img.src = `${path}screen${i}.${projectConfig.fileExtension}`;
+        
+        // ======================================================
+
         img.alt = `${projectConfig.title} - Screenshot ${i}`;
+        // ... reszta kodu bez zmian ...
         img.className = 'project-img';
         
-        // Obsługa błędu ładowania obrazka (gdyby pliku brakowało)
         img.onerror = function() {
             this.style.display = 'none';
-            console.warn(`Błąd ładowania: screens/screen${i}.${projectConfig.fileExtension}`);
         };
 
         wrapper.appendChild(img);

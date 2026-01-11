@@ -4,7 +4,7 @@ const projectFolders = [
     { 
         id: "streaminghub", 
         name: "STREAMINGHUB", 
-        desc: "Aplikacja webowa do streamingu treści.", 
+        desc: "Aplikacja webowa do streamingu treści z wykorzystaniem JavaScript i SQL.", 
         // Tutaj podajesz dokładną ścieżkę do obrazka:
         img: "streaminghub/screen/screen1.png" 
     },
