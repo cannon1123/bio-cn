@@ -6,11 +6,12 @@ const mockUserData = {
     role: "LVL.4 SECURITY RESEARCHER",
     bio: "Jestem początkującym programistą, który robi strony i programy hobbystycznie. Chętnie podejmę się stworzenia strony na zamówienie dla zainteresowanych osób!",
     subInfo: "Dostępny na zlecenia | C++ / HTML / CSS / JS",
-    projects: [
-        { name: "HoloAuth System", status: "Verified (5/5 Stars)" },
-        { name: "Neon Database", status: "In Progress..." },
-        { name: "Secure Gateway", status: "Verified (4.8/5 Stars)" }
-    ],
+projects: [
+    { name: "moje projekty", status: "ZOBACZ PROJEKT", url: "/projekty/" },
+    { name: "legitki", status: "zobacz moje umiejętności", url: "/legitki/" },
+    { name: "soon", status: "soon", url: "???" },
+    { name: "soon", status: "soon", url: "???" },
+],
     socials: [
         { name: "DISCORD", url: "#" },
         { name: "GITHUB", url: "#" },
