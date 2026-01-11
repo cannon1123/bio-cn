@@ -13,7 +13,7 @@ const projectConfig = {
     
     // USTAWIENIA ZDJĘĆ
     // Skrypt szuka zdjęć w folderze "screens" o nazwach: screen1.png, screen2.png itd.
-    totalScreenshots: 5,   // Ile masz łącznie zdjęć w folderze screens?
+    totalScreenshots: 6,   // Ile masz łącznie zdjęć w folderze screens?
     fileExtension: "png"   // Czy zdjęcia to .png czy .jpg?
 };
 

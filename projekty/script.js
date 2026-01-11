@@ -1,8 +1,8 @@
 // Lista folderów z projektami
 const projectFolders = [
-    { id: "projekt_1", name: "HoloAuth System", desc: "System autoryzacji opartej o kryptografię." },
-    { id: "projekt_2", name: "Neon Database", desc: "Zabezpieczona baza danych SQL." },
-    { id: "projekt_3", name: "Cyber Shell", desc: "Emulator terminala w przeglądarce." }
+    { id: "streaminghub", name: "STREAMINGHUB", desc: "Aplikacja webowa do streamingu treści z wykorzystaniem JavaScript i SQL." },
+    { id: "soon", name: "soon", desc: "soon" },
+    { id: "soon", name: "soon", desc: "soon" }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
