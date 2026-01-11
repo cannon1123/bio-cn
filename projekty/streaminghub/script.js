@@ -3,7 +3,7 @@
 // =================================================================
 const projectConfig = {
     title: "streaminghub",
-    status: "VERSION 2.7 [STABLE]",
+    status: "VERSION 2.8 [STABLE]",
     description: `StreamingHub to projekt strony internetowej do oglądania filmów online za darmo. Aplikacja wykorzystuje relacyjną bazę danych SQL do przechowywania i zarządzania danymi filmów (tytuły, opisy, kategorie). Warstwa frontendowa została zrealizowana z użyciem JavaScript, zapewniając dynamiczne ładowanie treści oraz interaktywny interfejs użytkownika. Projekt łączy logikę backendową z bazą danych, skupiając się na wydajności, czytelności kodu oraz łatwej nawigacji. ⚠️ Uwaga: Strona może automatycznie przejść w tryb uśpienia lub zostać tymczasowo wyłączona po dłuższym okresie nieaktywności (np. około tygodnia), co wynika z ograniczeń hostingowych, a nie błędów aplikacji.`,
     projectUrl: "https://streaminghub.cnhub.pl",
     
