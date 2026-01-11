@@ -1,0 +1,107 @@
+/* ==========================================================================
+   BAZA (Zachowana z oryginału dla spójności 1:1)
+   ========================================================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Courier New", monospace;
+  background: #0a0e1a;
+  min-height: 100vh; /* Zmienione na min-height dla scrollowania */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 2000px;
+  overflow-x: hidden; /* Tylko poziomy scroll ukryty */
+  overflow-y: auto;   /* Pionowy dozwolony dla długich galerii */
+  padding: 40px 0;    /* Odstęp góra/dół */
+}
+
+/* TŁO GRIDOWE */
+body::before {
+  content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(0deg, transparent 24%, rgba(0, 217, 255, 0.15) 25%, rgba(0, 217, 255, 0.15) 26%, transparent 27%, transparent 74%, rgba(0, 217, 255, 0.15) 75%, rgba(0, 217, 255, 0.15) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 217, 255, 0.15) 25%, rgba(0, 217, 255, 0.15) 26%, transparent 27%, transparent 74%, rgba(0, 217, 255, 0.15) 75%, rgba(0, 217, 255, 0.15) 76%, transparent 77%, transparent);
+  background-size: 80px 100px; opacity: 0.4; z-index: 0; pointer-events: none;
+}
+
+/* GŁÓWNA KARTA */
+.login-card {
+  position: relative;
+  width: 600px; /* Szersza karta dla projektu */
+  max-width: 90%;
+  padding: 40px;
+  background: rgba(10, 25, 45, 0.65); /* Bardziej kryjące tło pod tekst */
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(0, 217, 255, 0.5);
+  border-radius: 20px;
+  box-shadow: 0 0 60px rgba(0, 217, 255, 0.2), inset 0 0 40px rgba(0, 136, 255, 0.1);
+  animation: cardProject 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  z-index: 10;
+  margin-top: 50px; /* Odsunięcie od góry */
+}
+
+.scan-line {
+  position: absolute; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 217, 255, 0.8) 50%, transparent 100%);
+  animation: scan 4s linear infinite; z-index: 100; pointer-events: none; opacity: 0.5;
+}
+
+/* TYPOGRAFIA NAGŁÓWKA */
+.project-title-glitch {
+  font-size: 28px; color: #fff; text-transform: uppercase; letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(0, 217, 255, 0.8); margin-bottom: 5px;
+}
+
+#proj-status { color: #00ff88; font-size: 10px; letter-spacing: 2px; }
+
+/* OPIS */
+.project-info { text-align: left; margin: 30px 0; border-bottom: 1px solid rgba(0, 217, 255, 0.2); padding-bottom: 20px; }
+.main-desc { color: #ccc; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+
+/* PRZYCISK "URUCHOM" */
+.action-btn {
+  display: inline-block; padding: 12px 25px;
+  background: linear-gradient(135deg, #0088ff 0%, #00d9ff 100%);
+  color: #fff; text-decoration: none; font-weight: bold; font-size: 12px; letter-spacing: 1px;
+  border-radius: 5px; box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+  transition: 0.3s; border: 1px solid rgba(255,255,255,0.2);
+}
+.action-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0, 217, 255, 0.8); }
+
+/* GALERIA */
+.gallery-section { text-align: left; margin-top: 20px; }
+.section-label { color: #00d9ff; font-size: 10px; letter-spacing: 2px; display: block; margin-bottom: 15px; border-left: 3px solid #00d9ff; padding-left: 10px; }
+
+.gallery-grid { display: flex; flex-direction: column; gap: 15px; }
+
+.screenshot-container {
+  position: relative; border: 1px solid rgba(0, 217, 255, 0.3);
+  padding: 5px; background: rgba(0,0,0,0.3); transition: 0.3s;
+}
+.screenshot-container:hover { border-color: #00d9ff; box-shadow: 0 0 15px rgba(0, 217, 255, 0.2); }
+
+.project-img { width: 100%; display: block; filter: grayscale(40%) contrast(110%); transition: 0.5s; }
+.project-img:hover { filter: grayscale(0%) contrast(100%); }
+
+/* Klasa do ukrywania nadmiarowych zdjęć */
+.hidden-screen { display: none; }
+
+/* Przycisk "Pokaż więcej" */
+.secondary-btn {
+  background: transparent; border: 1px dashed rgba(0, 217, 255, 0.5);
+  color: #00d9ff; width: 100%; padding: 10px; margin-top: 15px;
+  cursor: pointer; font-family: inherit; font-size: 11px; transition: 0.3s;
+}
+.secondary-btn:hover { background: rgba(0, 217, 255, 0.1); border-color: #00d9ff; }
+
+/* POWRÓT */
+.navigation-footer { margin-top: 40px; text-align: center; }
+.back-link { color: #666; font-size: 10px; text-decoration: none; transition: 0.3s; }
+.back-link:hover { color: #fff; text-shadow: 0 0 5px white; }
+
+/* ANIMACJE (Skrócone z oryginału) */
+@keyframes cardProject { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes scan { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+
+/* RZUTNIK (Tło) */
+.projector-device { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) translateZ(-500px); width: 10px; height: 10px; z-index: 1; opacity: 0.5; pointer-events: none; }
+.light-beam { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(0,136,255,0.05) 0%, transparent 70%); z-index: 0; pointer-events: none; }

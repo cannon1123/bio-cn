@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PROJECT DATABASE | LOADED</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="scene">
+      <div class="projector-device">
+        <div class="projector-lens"></div>
+        <div class="projector-body"></div>
+      </div>
+      
+      <div class="light-beam light-beam-0"></div>
+      <div class="light-beam light-beam-final"></div>
+
+      <div class="login-card project-mode">
+        <div class="scan-line"></div>
+
+        <div class="card-content">
+          <div class="title project-header">
+            <h1 class="project-title-glitch" id="proj-name">LOADING...</h1>
+            <p id="proj-status">ARCHIVED DATA</p>
+          </div>
+
+          <div class="project-info">
+            <p class="main-desc" id="proj-desc">
+              <span class="loading-dots">Retrieving project data</span>
+            </p>
+            
+            <a href="#" id="proj-link" class="action-btn" target="_blank">
+                <span>► URUCHOM PROJEKT</span>
+            </a>
+          </div>
+
+          <div class="gallery-section">
+            <label class="section-label">VISUAL RECORDS (SCREENSHOTS)</label>
+            
+            <div class="gallery-grid" id="gallery-container"></div>
+
+            <button id="show-more-btn" class="secondary-btn" style="display: none;">
+                [+] EXPAND DATABASE
+            </button>
+          </div>
+
+          <div class="navigation-footer">
+            <a href="../../index.html" class="back-link">
+             &lt; RETURN TO ROOT
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
