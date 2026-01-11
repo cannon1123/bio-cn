@@ -11,7 +11,7 @@ const projectConfig = {
     // Tutaj wpisz ścieżkę do folderu. 
     // Jeśli zdjęcia są w tym samym folderze w katalogu 'screens', zostaw "screens/"
     // Jeśli są gdzie indziej, wpisz np. "/projekty/streaminghub/screen/"
-    screenshotsPath: "/projekty/streaminghub/screen/", 
+    screenshotsPath: "/screen/", 
     
     totalScreenshots: 6,
     fileExtension: "png"
