@@ -3,9 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠ | Hub</title>
+    <title>⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠ | Bio & Hub</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   </head>
   <body>
     <div class="scene">
@@ -29,90 +28,88 @@
         <div class="scan-line"></div>
 
         <div class="card-content">
+          
           <nav class="holo-nav">
-            <button class="nav-btn active" onclick="switchView('bio')">BIO</button>
-            <button class="nav-btn" onclick="switchView('legitki')">LEGITKI</button>
-            <button class="nav-btn" id="auth-btn" onclick="switchView('login')">LOGIN</button>
+             <span class="nav-item active" onclick="app.switchView('bio')">[ BIO ]</span>
+             <span class="nav-item" onclick="app.switchView('legitki')">[ LEGITKI ]</span>
+             <span class="nav-item" id="btn-login-nav" onclick="app.switchView('login')">[ LOGIN ]</span>
           </nav>
 
-          <div class="content-container">
-            
-            <div id="view-bio" class="view-section active-view">
+          <div id="view-bio" class="fade-view active-view">
               <div class="title bio-title-section">
-                <h1 class="bio-nick-highlight" id="user-nick">...</h1>
-                <p id="user-role">LOADING DATA...</p>
+                <h1 class="bio-nick-highlight" id="user-nick">⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠</h1>
+                <p id="user-role">LOADING...</p>
               </div>
 
               <div class="bio-details">
                 <p class="main-bio-text" id="bio-text">
-                  <span class="loading-dots">Initializing stream</span>
+                  <span class="loading-dots">Waiting for data stream</span>
                 </p>
                 <p class="sub-bio-text" id="sub-info">...</p>
               </div>
 
               <div class="bio-section-container">
                 <label class="section-label">OSTATNIE PROJEKTY</label>
-                <div class="projects-grid" id="projects-list"></div>
+                <div class="projects-grid" id="projects-list">
+                   </div>
               </div>
 
-              <div class="links social-links-container" id="social-links"></div>
-            </div>
-
-            <div id="view-legitki" class="view-section" style="display: none;">
-              <div class="stats-bar">
-                <div class="stat-item">
-                  <span class="stat-label">TOTAL EARNED</span>
-                  <span class="stat-value" id="total-earnings">0 PLN</span>
-                </div>
-                <div class="stat-item">
-                  <span class="stat-label">VOUCHES</span>
-                  <span class="stat-value" id="total-vouches">0</span>
-                </div>
-              </div>
-
-              <div id="admin-controls" style="display: none;">
-                <button class="action-btn" onclick="switchView('add-legitka')">+ DODAJ LEGITKĘ</button>
-              </div>
-
-              <div class="legitki-scroll-area" id="legitki-list">
-                </div>
-            </div>
-
-            <div id="view-add-legitka" class="view-section" style="display: none;">
-               <h3 class="section-header">NOWE ZLECENIE</h3>
-               <form id="add-legitka-form" onsubmit="handleNewLegitka(event)">
-                 <input type="text" class="holo-input" id="inp-client" placeholder="Klient / Nick" required>
-                 <input type="number" class="holo-input" id="inp-price" placeholder="Kwota (PLN)" required>
-                 <input type="text" class="holo-input" id="inp-project-name" placeholder="Nazwa Projektu" required>
-                 <input type="url" class="holo-input" id="inp-link" placeholder="Link (opcjonalnie)">
-                 <textarea class="holo-input" id="inp-desc" rows="2" placeholder="Opis / Opinia"></textarea>
-                 
-                 <label class="file-upload-label">
-                    <span>[ UPLOAD SCREENSHOT ]</span>
-                    <input type="file" id="inp-image" accept="image/*" style="display: none;">
-                 </label>
-                 <div id="preview-container"></div>
-
-                 <div class="form-actions">
-                   <button type="button" class="nav-btn" onclick="switchView('legitki')">CANCEL</button>
-                   <button type="submit" class="action-btn">SAVE DATABASE</button>
+              <div class="links social-links-container" id="social-links">
                  </div>
-               </form>
-            </div>
-
-            <div id="view-login" class="view-section" style="display: none;">
-              <h3 class="section-header">SECURE ACCESS</h3>
-              <form id="login-form" onsubmit="handleLogin(event)">
-                <input type="email" class="holo-input" id="login-email" placeholder="IDENTIFIER (Email)" required>
-                <input type="password" class="holo-input" id="login-pass" placeholder="ACCESS KEY (Password)" required>
-                <button type="submit" class="btn-login">
-                    <span>► AUTHENTICATE</span>
-                </button>
-              </form>
-              <p id="login-msg" class="status-msg"></p>
-            </div>
-
           </div>
+
+          <div id="view-legitki" class="fade-view" style="display: none;">
+              <div class="stats-container">
+                  <div class="stat-box">
+                      <label>TOTAL EARNED</label>
+                      <span id="stat-money">0 PLN</span>
+                  </div>
+                  <div class="stat-box">
+                      <label>CLIENTS</label>
+                      <span id="stat-count">0</span>
+                  </div>
+              </div>
+
+              <div id="admin-panel" style="display: none;">
+                  <button class="add-btn" onclick="app.switchView('add-legitka')">+ DODAJ WPIS</button>
+              </div>
+
+              <div class="legitki-list-container" id="legitki-container">
+                  </div>
+          </div>
+
+          <div id="view-add-legitka" class="fade-view" style="display: none;">
+              <h3 class="section-label" style="text-align:center; margin-bottom:15px;">NOWE ZLECENIE</h3>
+              <form id="form-legitka" onsubmit="app.handleAddLegitka(event)">
+                  <input type="text" id="inp-client" class="holo-input" placeholder="Nick Klienta" required>
+                  <input type="text" id="inp-project" class="holo-input" placeholder="Nazwa Projektu" required>
+                  <input type="number" id="inp-price" class="holo-input" placeholder="Zarobek (PLN)" required>
+                  <input type="url" id="inp-link" class="holo-input" placeholder="Link do projektu (Opcjonalne)">
+                  <textarea id="inp-desc" class="holo-input" placeholder="Opis / Opinia" rows="2"></textarea>
+                  
+                  <label class="file-upload">
+                      <span>[ UPLOAD SCREENSHOT ]</span>
+                      <input type="file" id="inp-file" accept="image/*" onchange="app.handleFilePreview(this)">
+                  </label>
+                  <div id="img-preview-box"></div>
+
+                  <div class="form-buttons">
+                      <button type="button" class="cancel-btn" onclick="app.switchView('legitki')">ANULUJ</button>
+                      <button type="submit" class="save-btn">ZAPISZ</button>
+                  </div>
+              </form>
+          </div>
+
+          <div id="view-login" class="fade-view" style="display: none;">
+              <h3 class="section-label" style="text-align:center;">AUTORYZACJA</h3>
+              <form onsubmit="app.handleLogin(event)" style="margin-top: 20px;">
+                  <input type="text" id="login-user" class="holo-input" placeholder="Login ID">
+                  <input type="password" id="login-pass" class="holo-input" placeholder="Access Key">
+                  <button type="submit" class="btn-login"><span>► ACCESS</span></button>
+              </form>
+              <p id="login-msg" style="text-align:center; font-size:10px; margin-top:10px;"></p>
+          </div>
+
         </div>
       </div>
     </div>
