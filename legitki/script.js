@@ -1,119 +1,203 @@
-// ==========================================
-// 1. ZABEZPIECZENIA (Anti-Debug)
-// ==========================================
+// =================================================================
+// SECURITY MODULE (Anti-Debug & Protection)
+// =================================================================
 (function() {
-    document.addEventListener('contextmenu', e => e.preventDefault());
+    // 1. Blokada Prawego Przycisku
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // 2. Blokada Skrótów Klawiszowych
     document.onkeydown = function(e) {
-        // Blokada F12, Ctrl+Shift+I, itp.
-        if(e.keyCode == 123) return false;
-        if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
-        if(e.ctrlKey && (e.keyCode == 'U'.charCodeAt(0))) return false;
-    };
-    // Delikatna pętla utrudniająca inspekcję (odkomentuj jak chcesz hardkor)
-    /* setInterval(() => { debugger; }, 1000); */
+        if(e.keyCode == 123) return false; // F12
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+        if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+    }
+
+    // 3. Console Clearing & Debugger Loop (Hardcore mode)
+    // Uwaga: To może irytować przy developmencie, zakomentuj jeśli testujesz sam.
+    setInterval(() => {
+        console.clear();
+        // console.log("%c SYSTEM SECURED BY CANNON ", "color: #00ff88; background: #000; font-size: 20px; padding: 10px;");
+    }, 2000);
+
+    // Prosty debugger trap
+    setInterval(function() {
+        (function() {}.constructor("debugger")());
+    }, 1000);
 })();
 
-// ==========================================
-// 2. CONFIG I DANE
-// ==========================================
-const currentUser = {
-    isLogged: true, // Zmień na false żeby ukryć przycisk "Dodaj"
-    nick: "Admin_Cannon"
-};
 
-const database = [
-    { nick: "Klient_1", rating: 5.0, text: "Szybko i sprawnie, polecam!", date: "2024-05-10" },
-    { nick: "User_Unknown", rating: 4.5, text: "Działa git, ale instrukcja mogłaby być lepsza.", date: "2024-05-12" },
-    { nick: "HackerPL", rating: 5.0, text: "Profeska. Kod czyściutki.", date: "2024-05-14" }
-];
+// =================================================================
+// MOCK DATA (Baza Danych - Symulacja)
+// =================================================================
 
-// ==========================================
-// 3. GŁÓWNA LOGIKA
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    initAuth();
-    loadReviews();
-
-    // Obsługa Modala
-    const modal = document.getElementById('modal-overlay');
-    const openBtn = document.getElementById('open-modal-btn');
-    const cancelBtn = document.getElementById('btn-cancel');
-    const submitBtn = document.getElementById('btn-submit');
-    const range = document.getElementById('inp-range');
-
-    // Otwieranie
-    if(openBtn) {
-        openBtn.addEventListener('click', () => {
-            modal.style.display = 'flex'; // Zmieniamy z none na flex
-        });
-    }
-
-    // Zamykanie
-    cancelBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
-    // Slider Oceny
-    range.addEventListener('input', (e) => {
-        document.getElementById('rating-preview').innerText = parseFloat(e.target.value).toFixed(1);
-    });
-
-    // Wysyłanie (Symulacja)
-    submitBtn.addEventListener('click', () => {
-        const title = document.getElementById('inp-title').value;
-        if(!title) return alert("Wpisz tytuł!");
-        
-        // Dodawanie do "bazy" (tylko wizualnie teraz)
-        const newReview = {
-            nick: currentUser.nick,
-            rating: range.value,
-            text: document.getElementById('inp-desc').value || "Brak opisu",
-            date: "TERAZ"
-        };
-        
-        database.unshift(newReview); // Dodaj na początek
-        loadReviews(); // Odśwież listę
-        modal.style.display = 'none'; // Zamknij
-    });
-});
-
-function initAuth() {
-    const box = document.getElementById('auth-display');
-    const addContainer = document.getElementById('add-btn-container');
-
-    if(currentUser.isLogged) {
-        box.innerHTML = `<span class="auth-status">● ${currentUser.nick}</span>`;
-        if(addContainer) addContainer.style.display = 'block';
-    } else {
-        box.innerHTML = `<button style="background:none; border:1px solid #00d9ff; color:#00d9ff; padding:2px 8px; cursor:pointer;">ZALOGUJ</button>`;
-    }
+// Helper: Generuje losowy base64 (kolorowy kwadrat) dla testu, 
+// normalnie tu będą prawdziwe screeny z DB.
+function getMockBase64(color) {
+    // Zwraca mały pixel w base64, żeby nie zaśmiecać kodu
+    return `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iODAiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiR7Y29sb3J9Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGR5PSIuM2VtIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSI+UFJPT0Y8L3RleHQ+PC9zdmc+`;
 }
 
-function loadReviews() {
-    const list = document.getElementById('reviews-list');
-    list.innerHTML = ""; // Czyść loader
+const mockReviews = [
+    {
+        id: 1,
+        nick: "K4mil_Dev",
+        boughtTimes: 3,
+        totalSpent: "150 PLN",
+        rating: 5.0,
+        text: "Najlepszy dev, wszystko śmiga. Skrypt pod bio działa idealnie. Polecam!",
+        images: [getMockBase64('#003366'), getMockBase64('#004488')] 
+    },
+    {
+        id: 2,
+        nick: "Anon_User99",
+        boughtTimes: 1,
+        totalSpent: "40 PLN",
+        rating: 4.5,
+        text: "Dobre, ale instalacja chwilę zajęła. Support pomógł w 5 minut.",
+        images: [getMockBase64('#660033')] // Tylko 1 zdjęcie
+    },
+    {
+        id: 3,
+        nick: "BigBoss",
+        boughtTimes: 12,
+        totalSpent: "1200 PLN",
+        rating: 5.0,
+        text: "Kupiłem pakiet VIP. Wszystko bangla. Legit w opór. Tutaj macie screeny z panelu.",
+        // 4 zdjęcia - powinno ukryć 2
+        images: [
+            getMockBase64('#006600'), 
+            getMockBase64('#008800'), 
+            getMockBase64('#00aa00'), 
+            getMockBase64('#00cc00')
+        ]
+    }
+];
 
-    // Oblicz średnią
-    let sum = 0;
-    database.forEach(d => sum += parseFloat(d.rating));
-    let avg = (database.length > 0) ? (sum / database.length).toFixed(1) : "0.0";
+// =================================================================
+// LOGIC
+// =================================================================
 
-    document.getElementById('global-score').innerText = avg;
-    document.getElementById('total-count').innerText = `(${database.length} opinii)`;
-    document.getElementById('global-stars').innerText = "★".repeat(Math.round(avg));
+document.addEventListener('DOMContentLoaded', () => {
+    // Symulacja pobierania z bazy
+    setTimeout(() => {
+        renderReviews(mockReviews);
+        calculateGlobalStats(mockReviews);
+    }, 1000);
+});
 
-    // Generuj HTML
-    database.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'review-item';
-        div.innerHTML = `
-            <div class="r-top">
-                <span class="r-nick">${item.nick}</span>
-                <span style="color:#ffd700">★ ${item.rating}</span>
+function calculateGlobalStats(reviews) {
+    const total = reviews.length;
+    const sum = reviews.reduce((acc, curr) => acc + curr.rating, 0);
+    const avg = total > 0 ? (sum / total).toFixed(2) : "0.00"; // Np. 4.83
+
+    // Animacja licznika
+    animateValue("global-rating-val", 0, parseFloat(avg), 1500);
+    
+    document.getElementById('total-reviews-count').innerText = total;
+
+    // Generowanie gwiazdek globalnych (z dokładnością)
+    // Tutaj prosta wersja tekstowa lub graficzna
+    // Można to rozbudować o pasek wypełnienia w CSS
+}
+
+function renderReviews(reviews) {
+    const container = document.getElementById('reviews-list');
+    container.innerHTML = ''; // Czyścimy loader
+
+    reviews.forEach(review => {
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        
+        // Gwiazdki (prosta pętla)
+        let starsHtml = '';
+        for(let i=1; i<=5; i++) {
+            if(i <= Math.floor(review.rating)) starsHtml += '★';
+            else if(i === Math.ceil(review.rating) && !Number.isInteger(review.rating)) starsHtml += '½'; // Opcjonalnie pół gwiazdki
+            else starsHtml += '☆';
+        }
+
+        // Obsługa obrazków
+        let imagesHtml = '<div class="review-gallery">';
+        let hiddenImagesHtml = '';
+        let expandBtnHtml = '';
+
+        if(review.images && review.images.length > 0) {
+            // Pierwsze 2 zdjęcia
+            review.images.slice(0, 2).forEach(img => {
+                imagesHtml += `<img src="${img}" class="gallery-img" onclick="openFullImage('${img}')">`;
+            });
+
+            // Pozostałe zdjęcia (ukryte)
+            if(review.images.length > 2) {
+                const remaining = review.images.length - 2;
+                hiddenImagesHtml = `<div class="hidden-images" id="gallery-hidden-${review.id}" style="display: none; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;">`;
+                
+                review.images.slice(2).forEach(img => {
+                    hiddenImagesHtml += `<img src="${img}" class="gallery-img" onclick="openFullImage('${img}')">`;
+                });
+                hiddenImagesHtml += `</div>`;
+
+                expandBtnHtml = `<button class="expand-btn" onclick="toggleGallery(${review.id}, this)">
+                                    [+] ZOBACZ WIĘCEJ DOWODÓW (${remaining})
+                                 </button>`;
+            }
+        }
+        imagesHtml += '</div>'; // Koniec głównej galerii
+
+        card.innerHTML = `
+            <div class="review-header">
+                <div class="reviewer-info">
+                    <h3>${review.nick}</h3>
+                    <div class="reviewer-stats">
+                        <div class="stat-item">KUPIŁ: <span>${review.boughtTimes}x</span></div>
+                        <div class="stat-item">WYDAŁ: <span>${review.totalSpent}</span></div>
+                    </div>
+                </div>
+                <div class="review-stars">${review.rating} ${starsHtml}</div>
             </div>
-            <div class="r-text">${item.text}</div>
-            <div style="font-size:9px; color:#555; text-align:right; margin-top:5px;">${item.date}</div>
+            <div class="review-content">"${review.text}"</div>
+            ${imagesHtml}
+            ${hiddenImagesHtml}
+            ${expandBtnHtml}
         `;
-        list.appendChild(div);
+
+        container.appendChild(card);
     });
+}
+
+// Funkcja rozwijania zdjęć
+window.toggleGallery = function(id, btn) {
+    const hiddenDiv = document.getElementById(`gallery-hidden-${id}`);
+    if (hiddenDiv.style.display === 'none') {
+        hiddenDiv.style.display = 'grid'; // Grid żeby pasowało do reszty
+        btn.innerHTML = '[-] UKRYJ DOWODY';
+    } else {
+        hiddenDiv.style.display = 'none';
+        btn.innerHTML = '[+] ZOBACZ WIĘCEJ DOWODÓW';
+    }
+};
+
+// Funkcja (placeholder) do powiększania zdjęć
+window.openFullImage = function(src) {
+    // Tutaj można dodać prosty lightbox modal
+    console.log("Opening image:", src);
+    // Na razie proste otwarcie w nowej karcie dla testu
+    // window.open(src, '_blank');
+};
+
+// Helper do animacji liczb
+function animateValue(id, start, end, duration) {
+    const obj = document.getElementById(id);
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        obj.innerHTML = (progress * (end - start) + start).toFixed(2);
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        }
+    };
+    window.requestAnimationFrame(step);
 }

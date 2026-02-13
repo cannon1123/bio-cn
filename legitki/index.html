@@ -5,70 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠ | Legit Check</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
 
-    <div class="nav-overlay">
-        <a href="/" class="back-link">« POWRÓT</a> <div class="user-panel" id="auth-display">
+    <div class="scene-overlay"></div>
+
+    <nav class="top-nav">
+        <div class="nav-logo">⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠ <span class="nav-module">LEGIT_CHECK</span></div>
+        <div class="nav-auth">
+            <div class="user-status" id="user-status-display" style="display: none;">
+                <span id="logged-user-nick">...</span>
+                <button id="logout-btn" class="auth-btn">LOGOUT</button>
             </div>
-    </div>
-
-    <div class="scene">
-        <div class="projector-device">
-            <div class="projector-lens"></div>
-            <div class="projector-body"></div>
+            <button id="login-btn" class="auth-btn">LOGIN_SYSTEM</button>
         </div>
+    </nav>
 
-        <div class="light-beam light-beam-0"></div>
-        <div class="light-beam light-beam-1"></div>
-        <div class="light-beam light-beam-2"></div>
-        <div class="light-beam light-beam-final"></div>
-
-        <div class="login-card legit-mode">
-            <div class="scan-line"></div>
-            
-            <div class="card-content">
-                <div class="legit-header">
-                    <h2>LEGIT CHECK</h2>
-                    <div class="score-box">
-                        <span id="global-score" class="score-val">0.0</span>
-                        <div id="global-stars" class="stars"></div>
+    <div class="legit-container">
+        
+        <header class="legit-header">
+            <div class="stats-box">
+                <div class="rating-huge">
+                    <span id="global-rating-val">0.0</span>
+                    <span class="max-scale">/ 5.0</span>
+                </div>
+                <div class="stars-visual" id="global-stars-container">
                     </div>
-                    <small id="total-count" style="color:#66b3cc; letter-spacing:1px;">(0 opinii)</small>
-                </div>
-
-                <div id="add-btn-container" style="display:none; margin: 15px 0;">
-                    <button id="open-modal-btn" class="glow-btn">✚ DODAJ OPINIĘ</button>
-                </div>
-
-                <div class="reviews-scroll-area" id="reviews-list">
-                    <div class="loader">Wczytywanie bazy...</div>
+                <div class="total-reviews">
+                    BAZA DANYCH: <span id="total-reviews-count" style="color: #00ff88;">0</span> ZWERYFIKOWANYCH WPISÓW
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div id="modal-overlay" class="modal-hidden">
-        <div class="modal-window">
-            <h3>NOWA LEGITKA</h3>
-            <input type="text" id="inp-title" placeholder="Tytuł (np. Polecam)..." maxlength="30">
-            <textarea id="inp-desc" placeholder="Opis transakcji..." maxlength="200"></textarea>
             
-            <div class="rating-control">
-                <label>OCENA: <span id="rating-preview" style="color:#00ff88">5.0</span></label>
-                <input type="range" id="inp-range" min="0" max="5" step="0.5" value="5">
+            <div class="add-review-placeholder">
+                <p class="permission-info">🔒 LOGOWANIE WYMAGANE DO DODANIA WPISU</p>
             </div>
+        </header>
 
-            <div class="upload-section">
-                <button class="upload-fake-btn">WYBIERZ SCREENY (Max 3)</button>
-                <small style="color:#555; display:block; margin-top:5px;">(Symulacja Uploadu)</small>
-            </div>
-
-            <div class="modal-buttons">
-                <button id="btn-cancel" class="btn-red">ANULUJ</button>
-                <button id="btn-submit" class="btn-green">WYŚLIJ</button>
-            </div>
+        <div class="reviews-grid" id="reviews-list">
+            <div class="loading-scan">SCANNING DATABASE...</div>
         </div>
+
     </div>
 
     <script src="script.js"></script>
