@@ -3,48 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠ | Legit Check</title>
+    <title>⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠ | LEGIT CHECK</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
 
-    <div class="scene-overlay"></div>
+    <div id="loader-screen">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <div class="loader-text">INITIALIZING DATABASE...</div>
+        </div>
+    </div>
+
+    <div class="background-grid"></div>
 
     <nav class="top-nav">
         <div class="nav-logo">⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠ <span class="nav-module">LEGIT_CHECK</span></div>
         <div class="nav-auth">
-            <div class="user-status" id="user-status-display" style="display: none;">
-                <span id="logged-user-nick">...</span>
-                <button id="logout-btn" class="auth-btn">LOGOUT</button>
-            </div>
             <button id="login-btn" class="auth-btn">LOGIN_SYSTEM</button>
         </div>
     </nav>
 
-    <div class="legit-container">
-        
-        <header class="legit-header">
-            <div class="stats-box">
-                <div class="rating-huge">
-                    <span id="global-rating-val">0.0</span>
-                    <span class="max-scale">/ 5.0</span>
+    <div class="main-container" id="main-content" style="display: none;"> <header class="stats-header">
+            <div class="rating-box">
+                <div class="rating-number">
+                    <span id="global-rating-val">0.00</span>
+                    <span class="rating-max">/ 5.0</span>
                 </div>
-                <div class="stars-visual" id="global-stars-container">
-                    </div>
-                <div class="total-reviews">
-                    BAZA DANYCH: <span id="total-reviews-count" style="color: #00ff88;">0</span> ZWERYFIKOWANYCH WPISÓW
+                <div class="rating-stars" id="global-stars">
+                    ★★★★★
                 </div>
             </div>
-            
-            <div class="add-review-placeholder">
-                <p class="permission-info">🔒 LOGOWANIE WYMAGANE DO DODANIA WPISU</p>
+
+            <div class="info-box">
+                <p>BAZA DANYCH: <span id="total-reviews" style="color: #00ff88;">0</span> ZWERYFIKOWANYCH WPISÓW</p>
+                <div class="alert-box">
+                    🔒 LOGOWANIE WYMAGANE DO DODANIA WPISU
+                </div>
             </div>
         </header>
 
-        <div class="reviews-grid" id="reviews-list">
-            <div class="loading-scan">SCANNING DATABASE...</div>
-        </div>
+        <div class="reviews-list" id="reviews-container">
+            </div>
 
     </div>
 

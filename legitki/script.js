@@ -1,203 +1,167 @@
 // =================================================================
-// SECURITY MODULE (Anti-Debug & Protection)
+// 1. SECURITY MODULE (Blokady)
 // =================================================================
-(function() {
-    // 1. Blokada Prawego Przycisku
-    document.addEventListener('contextmenu', event => event.preventDefault());
+document.addEventListener('contextmenu', event => event.preventDefault());
 
-    // 2. Blokada Skrótów Klawiszowych
-    document.onkeydown = function(e) {
-        if(e.keyCode == 123) return false; // F12
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
-        if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
-    }
-
-    // 3. Console Clearing & Debugger Loop (Hardcore mode)
-    // Uwaga: To może irytować przy developmencie, zakomentuj jeśli testujesz sam.
-    setInterval(() => {
-        console.clear();
-        // console.log("%c SYSTEM SECURED BY CANNON ", "color: #00ff88; background: #000; font-size: 20px; padding: 10px;");
-    }, 2000);
-
-    // Prosty debugger trap
-    setInterval(function() {
-        (function() {}.constructor("debugger")());
-    }, 1000);
-})();
-
+document.onkeydown = function(e) {
+    if(e.keyCode == 123) return false; // F12
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+    if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+};
 
 // =================================================================
-// MOCK DATA (Baza Danych - Symulacja)
+// 2. DANE TESTOWE (MOCK DATA)
 // =================================================================
+// Placeholder Base64 image (niebieski kwadrat)
+const mockImg = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iODAiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDMzNjYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZHk9Ii4zZW0iIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIj5QUkRTRzwvdGV4dD48L3N2Zz4=";
 
-// Helper: Generuje losowy base64 (kolorowy kwadrat) dla testu, 
-// normalnie tu będą prawdziwe screeny z DB.
-function getMockBase64(color) {
-    // Zwraca mały pixel w base64, żeby nie zaśmiecać kodu
-    return `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iODAiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiR7Y29sb3J9Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGR5PSIuM2VtIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSI+UFJPT0Y8L3RleHQ+PC9zdmc+`;
-}
-
-const mockReviews = [
+const reviewsData = [
     {
         id: 1,
         nick: "K4mil_Dev",
-        boughtTimes: 3,
-        totalSpent: "150 PLN",
+        bought: 3,
+        spent: "150 PLN",
         rating: 5.0,
-        text: "Najlepszy dev, wszystko śmiga. Skrypt pod bio działa idealnie. Polecam!",
-        images: [getMockBase64('#003366'), getMockBase64('#004488')] 
+        text: "Szybka realizacja, wszystko działa jak należy. Polecam!",
+        images: [mockImg, mockImg]
     },
     {
         id: 2,
-        nick: "Anon_User99",
-        boughtTimes: 1,
-        totalSpent: "40 PLN",
+        nick: "Anonim_99",
+        bought: 1,
+        spent: "40 PLN",
         rating: 4.5,
-        text: "Dobre, ale instalacja chwilę zajęła. Support pomógł w 5 minut.",
-        images: [getMockBase64('#660033')] // Tylko 1 zdjęcie
+        text: "Trochę problemów przy konfiguracji, ale support pomógł.",
+        images: [mockImg]
     },
     {
         id: 3,
-        nick: "BigBoss",
-        boughtTimes: 12,
-        totalSpent: "1200 PLN",
+        nick: "Big_Boss_2024",
+        bought: 15,
+        spent: "2500 PLN",
         rating: 5.0,
-        text: "Kupiłem pakiet VIP. Wszystko bangla. Legit w opór. Tutaj macie screeny z panelu.",
-        // 4 zdjęcia - powinno ukryć 2
-        images: [
-            getMockBase64('#006600'), 
-            getMockBase64('#008800'), 
-            getMockBase64('#00aa00'), 
-            getMockBase64('#00cc00')
-        ]
+        text: "Kupiłem pakiet VIP. Działa wyśmienicie. Poniżej dowody zakupu.",
+        // Dużo zdjęć, aby przetestować przycisk "Rozwiń"
+        images: [mockImg, mockImg, mockImg, mockImg, mockImg]
     }
 ];
 
 // =================================================================
-// LOGIC
+// 3. LOGIKA APLIKACJI
 // =================================================================
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Symulacja pobierania z bazy
+document.addEventListener("DOMContentLoaded", () => {
+    // A. Symulacja Ładowania
     setTimeout(() => {
-        renderReviews(mockReviews);
-        calculateGlobalStats(mockReviews);
-    }, 1000);
+        const loader = document.getElementById('loader-screen');
+        const content = document.getElementById('main-content');
+        
+        loader.style.opacity = '0';
+        setTimeout(() => {
+            loader.style.display = 'none';
+            content.style.display = 'block';
+            
+            // Dopiero po załadowaniu liczymy statystyki
+            initApp();
+        }, 500);
+    }, 2000); // Czas trwania loadera: 2 sekundy
 });
 
-function calculateGlobalStats(reviews) {
-    const total = reviews.length;
-    const sum = reviews.reduce((acc, curr) => acc + curr.rating, 0);
-    const avg = total > 0 ? (sum / total).toFixed(2) : "0.00"; // Np. 4.83
-
-    // Animacja licznika
-    animateValue("global-rating-val", 0, parseFloat(avg), 1500);
-    
-    document.getElementById('total-reviews-count').innerText = total;
-
-    // Generowanie gwiazdek globalnych (z dokładnością)
-    // Tutaj prosta wersja tekstowa lub graficzna
-    // Można to rozbudować o pasek wypełnienia w CSS
+function initApp() {
+    renderStats();
+    renderReviews();
 }
 
-function renderReviews(reviews) {
-    const container = document.getElementById('reviews-list');
-    container.innerHTML = ''; // Czyścimy loader
+function renderStats() {
+    const total = reviewsData.length;
+    // Średnia
+    const sum = reviewsData.reduce((acc, curr) => acc + curr.rating, 0);
+    const avg = total > 0 ? (sum / total).toFixed(2) : "0.00";
 
-    reviews.forEach(review => {
+    // Animacja liczby
+    animateNumber("global-rating-val", 0, parseFloat(avg), 1500);
+    document.getElementById('total-reviews').innerText = total;
+
+    // Aktualizacja gwiazdek w nagłówku (prosta wersja)
+    const starsContainer = document.getElementById('global-stars');
+    starsContainer.innerHTML = getStarsHTML(avg);
+}
+
+function renderReviews() {
+    const container = document.getElementById('reviews-container');
+    container.innerHTML = '';
+
+    reviewsData.forEach(rev => {
         const card = document.createElement('div');
         card.className = 'review-card';
-        
-        // Gwiazdki (prosta pętla)
-        let starsHtml = '';
-        for(let i=1; i<=5; i++) {
-            if(i <= Math.floor(review.rating)) starsHtml += '★';
-            else if(i === Math.ceil(review.rating) && !Number.isInteger(review.rating)) starsHtml += '½'; // Opcjonalnie pół gwiazdki
-            else starsHtml += '☆';
-        }
 
-        // Obsługa obrazków
-        let imagesHtml = '<div class="review-gallery">';
-        let hiddenImagesHtml = '';
-        let expandBtnHtml = '';
-
-        if(review.images && review.images.length > 0) {
-            // Pierwsze 2 zdjęcia
-            review.images.slice(0, 2).forEach(img => {
-                imagesHtml += `<img src="${img}" class="gallery-img" onclick="openFullImage('${img}')">`;
-            });
-
-            // Pozostałe zdjęcia (ukryte)
-            if(review.images.length > 2) {
-                const remaining = review.images.length - 2;
-                hiddenImagesHtml = `<div class="hidden-images" id="gallery-hidden-${review.id}" style="display: none; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;">`;
-                
-                review.images.slice(2).forEach(img => {
-                    hiddenImagesHtml += `<img src="${img}" class="gallery-img" onclick="openFullImage('${img}')">`;
-                });
-                hiddenImagesHtml += `</div>`;
-
-                expandBtnHtml = `<button class="expand-btn" onclick="toggleGallery(${review.id}, this)">
-                                    [+] ZOBACZ WIĘCEJ DOWODÓW (${remaining})
-                                 </button>`;
+        // Obsługa zdjęć
+        let galleryHTML = '';
+        if (rev.images.length > 0) {
+            // Pierwsze 2 zdjęcia widoczne
+            const visibleImgs = rev.images.slice(0, 2).map(src => `<img src="${src}" class="proof-img">`).join('');
+            
+            // Reszta ukryta
+            let hiddenImgs = '';
+            let btnHTML = '';
+            
+            if (rev.images.length > 2) {
+                hiddenImgs = `<div class="hidden-content" id="hidden-${rev.id}" style="display:none; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px;">
+                                ${rev.images.slice(2).map(src => `<img src="${src}" class="proof-img">`).join('')}
+                              </div>`;
+                btnHTML = `<button class="expand-btn" onclick="toggleGallery(${rev.id}, this)">[+] POKAŻ WIĘCEJ (${rev.images.length - 2})</button>`;
             }
+
+            galleryHTML = `<div class="gallery-grid">${visibleImgs}</div> ${hiddenImgs} ${btnHTML}`;
         }
-        imagesHtml += '</div>'; // Koniec głównej galerii
 
         card.innerHTML = `
-            <div class="review-header">
-                <div class="reviewer-info">
-                    <h3>${review.nick}</h3>
-                    <div class="reviewer-stats">
-                        <div class="stat-item">KUPIŁ: <span>${review.boughtTimes}x</span></div>
-                        <div class="stat-item">WYDAŁ: <span>${review.totalSpent}</span></div>
+            <div class="card-top">
+                <div>
+                    <div class="user-nick">${rev.nick}</div>
+                    <div class="user-stats">
+                        <span>KUPIŁ: ${rev.bought}x</span>
+                        <span>WYDAŁ: ${rev.spent}</span>
                     </div>
                 </div>
-                <div class="review-stars">${review.rating} ${starsHtml}</div>
+                <div class="card-rating">${rev.rating} ★</div>
             </div>
-            <div class="review-content">"${review.text}"</div>
-            ${imagesHtml}
-            ${hiddenImagesHtml}
-            ${expandBtnHtml}
+            <div class="review-text">"${rev.text}"</div>
+            ${galleryHTML}
         `;
-
         container.appendChild(card);
     });
 }
 
-// Funkcja rozwijania zdjęć
-window.toggleGallery = function(id, btn) {
-    const hiddenDiv = document.getElementById(`gallery-hidden-${id}`);
-    if (hiddenDiv.style.display === 'none') {
-        hiddenDiv.style.display = 'grid'; // Grid żeby pasowało do reszty
-        btn.innerHTML = '[-] UKRYJ DOWODY';
-    } else {
-        hiddenDiv.style.display = 'none';
-        btn.innerHTML = '[+] ZOBACZ WIĘCEJ DOWODÓW';
+// Funkcja pomocnicza do generowania gwiazdek
+function getStarsHTML(rating) {
+    let output = '';
+    for(let i=1; i<=5; i++) {
+        if(i <= Math.round(rating)) output += '★';
+        else output += '☆';
     }
-};
+    return output;
+}
 
-// Funkcja (placeholder) do powiększania zdjęć
-window.openFullImage = function(src) {
-    // Tutaj można dodać prosty lightbox modal
-    console.log("Opening image:", src);
-    // Na razie proste otwarcie w nowej karcie dla testu
-    // window.open(src, '_blank');
-};
-
-// Helper do animacji liczb
-function animateValue(id, start, end, duration) {
+// Animacja licznika
+function animateNumber(id, start, end, duration) {
     const obj = document.getElementById(id);
     let startTimestamp = null;
     const step = (timestamp) => {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
         obj.innerHTML = (progress * (end - start) + start).toFixed(2);
-        if (progress < 1) {
-            window.requestAnimationFrame(step);
-        }
+        if (progress < 1) window.requestAnimationFrame(step);
     };
     window.requestAnimationFrame(step);
+}
+
+// Funkcja globalna (dostępna dla HTML) do rozwijania
+window.toggleGallery = function(id, btn) {
+    const hiddenDiv = document.getElementById(`hidden-${id}`);
+    if (hiddenDiv.style.display === 'none') {
+        hiddenDiv.style.display = 'grid'
+    }
 }
