@@ -1,119 +1,82 @@
 <!DOCTYPE html>
 <html lang="pl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠ | Bio & Hub</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="scene">
-      <div class="projector-device">
-        <div class="projector-lens"></div>
-        <div class="projector-body"></div>
-      </div>
-
-      <div class="light-beam light-beam-0"></div>
-      <div class="light-beam light-beam-1"></div>
-      <div class="light-beam light-beam-2"></div>
-      <div class="light-beam light-beam-3"></div>
-      <div class="light-beam light-beam-4"></div>
-      <div class="light-beam light-beam-5"></div>
-      <div class="light-beam light-beam-6"></div>
-      <div class="light-beam light-beam-7"></div>
-      <div class="light-beam light-beam-8"></div>
-      <div class="light-beam light-beam-final"></div>
-
-      <div class="login-card bio-mode">
-        <div class="scan-line"></div>
-
-        <div class="card-content">
-          
-          <nav class="holo-nav">
-             <span class="nav-item active" onclick="app.switchView('bio')">[ BIO ]</span>
-             <span class="nav-item" onclick="app.switchView('legitki')">[ LEGITKI ]</span>
-             <span class="nav-item" id="btn-login-nav" onclick="app.switchView('login')">[ LOGIN ]</span>
-          </nav>
-
-          <div id="view-bio" class="fade-view active-view">
-              <div class="title bio-title-section">
-                <h1 class="bio-nick-highlight" id="user-nick">⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠</h1>
-                <p id="user-role">LOADING...</p>
-              </div>
-
-              <div class="bio-details">
-                <p class="main-bio-text" id="bio-text">
-                  <span class="loading-dots">Waiting for data stream</span>
-                </p>
-                <p class="sub-bio-text" id="sub-info">...</p>
-              </div>
-
-              <div class="bio-section-container">
-                <label class="section-label">OSTATNIE PROJEKTY</label>
-                <div class="projects-grid" id="projects-list">
-                   </div>
-              </div>
-
-              <div class="links social-links-container" id="social-links">
-                 </div>
-          </div>
-
-          <div id="view-legitki" class="fade-view" style="display: none;">
-              <div class="stats-container">
-                  <div class="stat-box">
-                      <label>TOTAL EARNED</label>
-                      <span id="stat-money">0 PLN</span>
-                  </div>
-                  <div class="stat-box">
-                      <label>CLIENTS</label>
-                      <span id="stat-count">0</span>
-                  </div>
-              </div>
-
-              <div id="admin-panel" style="display: none;">
-                  <button class="add-btn" onclick="app.switchView('add-legitka')">+ DODAJ WPIS</button>
-              </div>
-
-              <div class="legitki-list-container" id="legitki-container">
-                  </div>
-          </div>
-
-          <div id="view-add-legitka" class="fade-view" style="display: none;">
-              <h3 class="section-label" style="text-align:center; margin-bottom:15px;">NOWE ZLECENIE</h3>
-              <form id="form-legitka" onsubmit="app.handleAddLegitka(event)">
-                  <input type="text" id="inp-client" class="holo-input" placeholder="Nick Klienta" required>
-                  <input type="text" id="inp-project" class="holo-input" placeholder="Nazwa Projektu" required>
-                  <input type="number" id="inp-price" class="holo-input" placeholder="Zarobek (PLN)" required>
-                  <input type="url" id="inp-link" class="holo-input" placeholder="Link do projektu (Opcjonalne)">
-                  <textarea id="inp-desc" class="holo-input" placeholder="Opis / Opinia" rows="2"></textarea>
-                  
-                  <label class="file-upload">
-                      <span>[ UPLOAD SCREENSHOT ]</span>
-                      <input type="file" id="inp-file" accept="image/*" onchange="app.handleFilePreview(this)">
-                  </label>
-                  <div id="img-preview-box"></div>
-
-                  <div class="form-buttons">
-                      <button type="button" class="cancel-btn" onclick="app.switchView('legitki')">ANULUJ</button>
-                      <button type="submit" class="save-btn">ZAPISZ</button>
-                  </div>
-              </form>
-          </div>
-
-          <div id="view-login" class="fade-view" style="display: none;">
-              <h3 class="section-label" style="text-align:center;">AUTORYZACJA</h3>
-              <form onsubmit="app.handleLogin(event)" style="margin-top: 20px;">
-                  <input type="text" id="login-user" class="holo-input" placeholder="Login ID">
-                  <input type="password" id="login-pass" class="holo-input" placeholder="Access Key">
-                  <button type="submit" class="btn-login"><span>► ACCESS</span></button>
-              </form>
-              <p id="login-msg" style="text-align:center; font-size:10px; margin-top:10px;"></p>
-          </div>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠ | Legit Check</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="legit-body"> <div class="top-nav-panel">
+        <a href="index.html" class="nav-back">« POWRÓT</a>
+        <div class="user-status" id="auth-display">
+            <span class="guest-mode">GOŚĆ</span>
+            <button id="login-btn" class="auth-btn">ZALOGUJ</button>
         </div>
-      </div>
+    </div>
+
+    <div class="scene">
+        <div class="projector-device">
+            <div class="projector-lens"></div>
+            <div class="projector-body"></div>
+        </div>
+
+        <div class="light-beam light-beam-0"></div>
+        <div class="light-beam light-beam-1"></div>
+        <div class="light-beam light-beam-2"></div>
+        <div class="light-beam light-beam-3"></div>
+        <div class="light-beam light-beam-final"></div>
+
+        <div class="login-card legit-card-mode">
+            <div class="scan-line"></div>
+            
+            <div class="card-content">
+                <div class="legit-header">
+                    <h2 class="section-title">LEGIT CHECK</h2>
+                    <div class="overall-rating">
+                        <span class="big-score" id="global-score">0.0</span>
+                        <div class="stars-container" id="global-stars"></div>
+                        <span class="total-reviews" id="total-count">(0 opinii)</span>
+                    </div>
+                </div>
+
+                <div id="add-review-container" class="add-review-box" style="display:none;">
+                    <button id="open-review-form" class="action-btn">✚ DODAJ LEGITKĘ</button>
+                    <p class="perm-info">Masz uprawnienia do dodania opinii.</p>
+                </div>
+
+                <div class="reviews-list-container" id="reviews-list">
+                    <div class="loading-reviews">Ładowanie bazy danych...</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="review-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>NOWA LEGITKA</h3>
+            <input type="text" id="review-title" placeholder="Krótki tytuł..." maxlength="30">
+            <textarea id="review-desc" placeholder="Opisz swoje wrażenia..." maxlength="300"></textarea>
+            
+            <div class="star-rating-input">
+                <span class="star-label">OCENA:</span>
+                <input type="range" id="rating-slider" min="0" max="5" step="0.1" value="5">
+                <span id="rating-value-display">5.0</span>
+            </div>
+
+            <div class="file-upload-area">
+                <label for="img-upload" class="upload-btn">WYBIERZ SCREENY (MAX 5)</label>
+                <input type="file" id="img-upload" multiple accept="image/*" style="display:none;">
+                <div id="preview-area" class="preview-grid"></div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="cancel-review" class="cancel-btn">ANULUJ</button>
+                <button id="submit-review" class="confirm-btn">WYŚLIJ</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
-  </body>
+</body>
 </html>

@@ -1,228 +1,202 @@
 // =================================================================
-// DANE & KONFIGURACJA
+// SYSTEM ZABEZPIECZEŃ (ANTI-DEV & ANTI-DEBUG)
 // =================================================================
-const appData = {
-    user: {
-        nick: "⎝𝓬𝓪𝓷𝓷𝓸𝓷⎠",
-        role: "HOBBYIST DEVELOPER",
-        bio: "Jestem początkującym programistą, który robi strony i programy hobbystycznie. Chętnie podejmę się stworzenia strony na zamówienie!",
-        subInfo: "Dostępny na zlecenia | C++ / HTML / CSS / JS"
-    },
-    projects: [
-        { name: "moje projekty", status: "ZOBACZ PROJEKT", url: "/projekty/" },
-        { name: "legitki", status: "sprawdź opinie", url: "#", action: "app.switchView('legitki')" },
-        { name: "soon", status: "soon", url: "#" },
-        { name: "soon", status: "soon", url: "#" }
-    ],
-    socials: [
-        { name: "DISCORD", url: "#" },
-        { name: "GITHUB", url: "#" },
-        { name: "X / TWITTER", url: "#" }
-    ]
+(function() {
+    // 1. Blokada prawego przycisku
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // 2. Blokada skrótów klawiszowych (F12, Ctrl+Shift+I/J/U/C)
+    document.onkeydown = function(e) {
+        if(e.keyCode == 123) return false;
+        if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) return false;
+        if(e.ctrlKey && (e.keyCode == 'U'.charCodeAt(0))) return false;
+    };
+
+    // 3. Pętla debuggera (utrudnia analizę w konsoli)
+    setInterval(function() {
+        const start = new Date().getTime();
+        debugger; 
+        const end = new Date().getTime();
+        if (end - start > 100) {
+            // Wykryto otwarte devtools - można tu dodać akcję np. window.location.reload()
+            document.body.innerHTML = "<h1>SYSTEM SECURITY TRIGGERED</h1>";
+        }
+    }, 1000);
+})();
+
+// =================================================================
+// MOCK DATABASE & CONFIG
+// =================================================================
+
+// Symulacja zalogowanego użytkownika (zmień na false żeby testować widok gościa)
+const currentUser = {
+    isLoggedIn: true,
+    nick: "Klient_Testowy",
+    canReview: true, // Czy może dodać opinię?
+    totalSpent: 150, // PLN
+    purchaseCount: 3
 };
 
-// Symulowana baza danych (Legitki)
-// Obrazki trzymamy tu jako Base64 (w przyszłości zmienisz na URL Supabase)
-let dbLegitki = [
+// Przykładowe opinie w bazie
+let legitData = [
     {
         id: 1,
-        client: "Kowalski_Dev",
-        project: "Bot Discord",
-        price: 50,
-        desc: "Szybko i sprawnie, polecam.",
-        link: "",
-        image: null // brak screena
+        nick: "Anonim_XYZ",
+        rating: 5.0,
+        text: "Wszystko śmiga, skrypt działa od strzała. Polecam!",
+        stats: { bought: 1, spent: "50 PLN" },
+        images: [] // Brak zdjęć
     },
     {
         id: 2,
-        client: "Anonim",
-        project: "Strona Portfolio",
-        price: 150,
-        desc: "Super design, 1:1 jak chciałem.",
-        link: "https://google.com",
-        image: null 
+        nick: "Hacker_PL",
+        rating: 4.8,
+        text: "Dobry kontakt, szybka realizacja. Mały minus za brak dokumentacji na start, ale support pomógł.",
+        stats: { bought: 5, spent: "250 PLN" },
+        images: [
+            "https://via.placeholder.com/150/0000FF/808080?text=Dowod1", // Placeholdery zamiast Base64 dla czytelności kodu tutaj
+            "https://via.placeholder.com/150/FF0000/FFFFFF?text=Dowod2",
+            "https://via.placeholder.com/150/FFFF00/000000?text=Dowod3" // To powinno być ukryte
+        ]
+    },
+    {
+        id: 3,
+        nick: "Klient_Pro",
+        rating: 4.5,
+        text: "Jest okej.",
+        stats: { bought: 2, spent: "100 PLN" },
+        images: [
+            "https://via.placeholder.com/150/000000/FFFFFF?text=Screen1",
+            "https://via.placeholder.com/150/000000/FFFFFF?text=Screen2"
+        ]
     }
 ];
 
-// Stan aplikacji
-let currentUser = null; // null = gość, {role: 'admin'} = admin
-
 // =================================================================
-// LOGIKA APLIKACJI
+// LOGIKA STRONY
 // =================================================================
-const app = {
-    // Inicjalizacja (start strony)
-    init: () => {
-        // Czekamy na animację rzutnika (oryginalne 2.5s)
-        setTimeout(() => {
-            app.renderBio();
-            app.renderLegitki();
-        }, 2500);
-    },
 
-    // 1. Renderowanie Bio (Twoja stara funkcja, odświeżona)
-    renderBio: () => {
-        document.getElementById('user-nick').innerText = appData.user.nick;
-        document.getElementById('user-role').innerText = appData.user.role;
-        document.getElementById('bio-text').innerText = appData.user.bio;
-        document.getElementById('sub-info').innerText = appData.user.subInfo;
-
-        const pContainer = document.getElementById('projects-list');
-        pContainer.innerHTML = '';
-        appData.projects.forEach(p => {
-            const el = document.createElement('a');
-            el.className = 'project-card';
-            el.href = p.url;
-            el.style.textDecoration = 'none';
-            if(p.action) { 
-                el.onclick = (e) => { e.preventDefault(); eval(p.action); };
-            }
-            el.innerHTML = `<div class="project-title">${p.name}</div><div class="project-status">${p.status}</div>`;
-            pContainer.appendChild(el);
+document.addEventListener('DOMContentLoaded', () => {
+    initAuth();
+    calculateStats();
+    renderReviews();
+    
+    // Obsługa przycisku otwierania modalu
+    const openBtn = document.getElementById('open-review-form');
+    if(openBtn) {
+        openBtn.addEventListener('click', () => {
+            document.getElementById('review-modal').style.display = 'flex';
         });
-
-        const sContainer = document.getElementById('social-links');
-        sContainer.innerHTML = '';
-        appData.socials.forEach(s => {
-            const el = document.createElement('a');
-            el.href = s.url;
-            el.innerText = s.name;
-            sContainer.appendChild(el);
-        });
-    },
-
-    // 2. Przełączanie widoków (Bio <-> Legitki <-> Login)
-    switchView: (viewName) => {
-        // Ukryj wszystko
-        document.querySelectorAll('.fade-view').forEach(el => el.style.display = 'none');
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-
-        // Pokaż wybrane
-        const target = document.getElementById('view-' + viewName);
-        if(target) {
-            target.style.display = 'block';
-            // Znajdź guzik w nawigacji
-            const navBtn = document.querySelector(`.nav-item[onclick="app.switchView('${viewName}')"]`);
-            if(navBtn) navBtn.classList.add('active');
-        }
-
-        // Odśwież dane jeśli wchodzimy w legitki
-        if(viewName === 'legitki') app.renderLegitki();
-    },
-
-    // 3. Renderowanie Legitek + Obliczanie Zarobków
-    renderLegitki: () => {
-        const list = document.getElementById('legitki-container');
-        list.innerHTML = '';
-
-        let total = 0;
-        
-        // Odwracamy tablicę (najnowsze na górze)
-        [...dbLegitki].reverse().forEach(item => {
-            total += parseInt(item.price || 0);
-
-            const div = document.createElement('div');
-            div.className = 'legitka-item';
-            
-            // Opcjonalne elementy
-            const imgHtml = item.image ? `<img src="${item.image}" class="l-img">` : '';
-            const linkHtml = item.link ? `<a href="${item.link}" target="_blank" class="l-link">[ ZOBACZ PROJEKT ]</a>` : '';
-
-            div.innerHTML = `
-                <div class="legitka-header">
-                    <span class="l-client">${item.client}</span>
-                    <span class="l-price">+${item.price} PLN</span>
-                </div>
-                <div class="l-project">PROJEKT: ${item.project}</div>
-                <div class="l-desc">"${item.desc}"</div>
-                ${linkHtml}
-                ${imgHtml}
-            `;
-            list.appendChild(div);
-        });
-
-        // Aktualizacja statystyk
-        document.getElementById('stat-money').innerText = total + " PLN";
-        document.getElementById('stat-count').innerText = dbLegitki.length;
-
-        // Widoczność guzika admina
-        const isAdmin = currentUser && currentUser.role === 'admin';
-        document.getElementById('admin-panel').style.display = isAdmin ? 'block' : 'none';
-    },
-
-    // 4. Logowanie (Prosta symulacja)
-    handleLogin: (e) => {
-        e.preventDefault();
-        const u = document.getElementById('login-user').value;
-        const p = document.getElementById('login-pass').value;
-        const msg = document.getElementById('login-msg');
-
-        if(u === 'admin' && p === 'admin') { // HASŁO
-            currentUser = { role: 'admin' };
-            msg.style.color = '#00ff88';
-            msg.innerText = "ACCESS GRANTED";
-            
-            // Zmiana menu na Logout
-            const navBtn = document.getElementById('btn-login-nav');
-            navBtn.innerText = "[ LOGOUT ]";
-            navBtn.onclick = app.handleLogout;
-
-            setTimeout(() => app.switchView('legitki'), 1000);
-        } else {
-            msg.style.color = 'red';
-            msg.innerText = "ACCESS DENIED";
-        }
-    },
-
-    handleLogout: () => {
-        currentUser = null;
-        const navBtn = document.getElementById('btn-login-nav');
-        navBtn.innerText = "[ LOGIN ]";
-        navBtn.onclick = () => app.switchView('login');
-        app.switchView('bio');
-        alert("Wylogowano.");
-    },
-
-    // 5. Dodawanie Legitki (Base64)
-    handleAddLegitka: (e) => {
-        e.preventDefault();
-        
-        const client = document.getElementById('inp-client').value;
-        const project = document.getElementById('inp-project').value;
-        const price = document.getElementById('inp-price').value;
-        const link = document.getElementById('inp-link').value;
-        const desc = document.getElementById('inp-desc').value;
-        
-        // Zapisujemy screena z podglądu (jeśli jest)
-        const previewBox = document.getElementById('img-preview-box');
-        const imgBase64 = previewBox.querySelector('img') ? previewBox.querySelector('img').src : null;
-
-        const newItem = {
-            id: Date.now(),
-            client, project, price, link, desc, image: imgBase64
-        };
-
-        // Dodaj do bazy
-        dbLegitki.push(newItem);
-        
-        // Reset i powrót
-        e.target.reset();
-        previewBox.innerHTML = '';
-        app.switchView('legitki');
-    },
-
-    // Podgląd obrazka przed uploadem
-    handleFilePreview: (input) => {
-        if(input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.getElementById('img-preview-box').innerHTML = 
-                    `<img src="${e.target.result}" style="width:50px; border:1px solid #00d9ff; margin-top:5px;">`;
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
     }
-};
 
-// Start po załadowaniu DOM
-document.addEventListener('DOMContentLoaded', app.init);
+    // Obsługa anulowania
+    document.getElementById('cancel-review').addEventListener('click', () => {
+        document.getElementById('review-modal').style.display = 'none';
+    });
+
+    // Slider oceny (live update)
+    const rangeInput = document.getElementById('rating-slider');
+    rangeInput.addEventListener('input', (e) => {
+        document.getElementById('rating-value-display').innerText = parseFloat(e.target.value).toFixed(1);
+    });
+
+    // Symulacja wysyłania (na razie tylko console.log)
+    document.getElementById('submit-review').addEventListener('click', () => {
+        alert("Funkcja zapisu do bazy będzie dostępna po podpięciu backendu!");
+        document.getElementById('review-modal').style.display = 'none';
+    });
+});
+
+function initAuth() {
+    const authDisplay = document.getElementById('auth-display');
+    const addReviewBox = document.getElementById('add-review-container');
+
+    if (currentUser.isLoggedIn) {
+        authDisplay.innerHTML = `<span style='color:#00ff88'>LOGGED: ${currentUser.nick}</span> <button class='auth-btn'>WYLOGUJ</button>`;
+        
+        // Sprawdzamy czy może dodać opinię
+        if (currentUser.canReview) {
+            addReviewBox.style.display = 'block';
+        }
+    } else {
+        authDisplay.innerHTML = `<span class='guest-mode'>GOŚĆ</span> <button class='auth-btn'>ZALOGUJ</button>`;
+    }
+}
+
+function calculateStats() {
+    if (legitData.length === 0) return;
+
+    let sum = 0;
+    legitData.forEach(r => sum += r.rating);
+    let avg = sum / legitData.length;
+
+    // Aktualizacja nagłówka
+    document.getElementById('global-score').innerText = avg.toFixed(1);
+    document.getElementById('total-count').innerText = `(${legitData.length} opinii)`;
+    
+    // Generowanie gwiazdek globalnych
+    document.getElementById('global-stars').innerHTML = generateStars(avg);
+}
+
+function renderReviews() {
+    const container = document.getElementById('reviews-list');
+    container.innerHTML = ''; // Czyścimy loader
+
+    legitData.forEach(review => {
+        const div = document.createElement('div');
+        div.className = 'review-item';
+
+        // Logika zdjęć (ukrywanie > 2)
+        let imagesHTML = '';
+        if (review.images.length > 0) {
+            imagesHTML = `<div class="review-images">`;
+            review.images.forEach((img, index) => {
+                // Jeśli index > 1 (czyli 3 zdjęcie i więcej), dodajemy klasę hidden (lub styl)
+                let style = index > 1 ? 'display:none;' : ''; 
+                imagesHTML += `<img src="${img}" class="review-img-thumb img-group-${review.id}" style="${style}" onclick="alert('Tu będzie podgląd full screen')">`;
+            });
+            imagesHTML += `</div>`;
+            
+            // Przycisk rozwijania
+            if (review.images.length > 2) {
+                imagesHTML += `<button class="expand-btn" onclick="expandImages(${review.id}, this)">▼ POKAŻ WIĘCEJ (${review.images.length - 2})</button>`;
+            }
+        }
+
+        div.innerHTML = `
+            <div class="review-top">
+                <span class="reviewer-name">${review.nick}</span>
+                <div class="reviewer-stats">
+                    <span class="stat-badge">Kupiono: ${review.stats.bought}x</span>
+                    <span class="stat-badge">Wydano: ${review.stats.spent}</span>
+                </div>
+            </div>
+            <div class="review-stars">${generateStars(review.rating)} <span style="color:#666; font-size:9px;">(${review.rating})</span></div>
+            <p class="review-text">${review.text}</p>
+            ${imagesHTML}
+        `;
+        container.appendChild(div);
+    });
+}
+
+// Helper do gwiazdek (prosty system)
+function generateStars(rating) {
+    let output = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= rating) output += '★'; // Pełna
+        else if (i - 0.5 <= rating) output += '⯪'; // Połówka (znaki unicode mogą się różnić zależnie od fonta, tu uproszczone)
+        else output += '☆'; // Pusta
+    }
+    return output;
+}
+
+// Funkcja rozwijania zdjęć
+window.expandImages = function(id, btn) {
+    const hiddenImages = document.querySelectorAll(`.img-group-${id}`);
+    hiddenImages.forEach(img => {
+        img.style.display = 'block'; // Pokazujemy
+        // Opcjonalnie: Dodaj animację wejścia
+        img.style.animation = 'fadeIn 0.5s';
+    });
+    btn.style.display = 'none'; // Ukrywamy przycisk
+};
