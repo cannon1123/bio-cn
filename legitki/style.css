@@ -1,203 +1,150 @@
-/* ==========================================================================
-   LEGIT CHECK SPECIFIC STYLES
-   ========================================================================== */
-
-/* Zmiana rozmiaru karty dla Legit Check - musi być wyższa */
-.legit-card-mode {
-    height: 80vh; /* Większa wysokość na listę */
-    max-height: 700px;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Górny pasek nawigacji */
-.top-nav-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1000;
-    background: linear-gradient(to bottom, rgba(10,14,26,0.9), transparent);
-}
-
-.nav-back {
-    color: #00d9ff;
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
-    transition: 0.3s;
-}
-.nav-back:hover { text-shadow: 0 0 20px rgba(0, 217, 255, 1); transform: translateX(-5px); }
-
-.auth-btn {
-    background: transparent;
-    border: 1px solid #00d9ff;
-    color: #00d9ff;
-    padding: 5px 15px;
-    font-family: inherit;
-    cursor: pointer;
-    font-size: 10px;
-    transition: 0.3s;
-}
-.auth-btn:hover { background: rgba(0, 217, 255, 0.2); box-shadow: 0 0 15px #00d9ff; }
-
-/* Header sekcji */
-.legit-header {
-    text-align: center;
-    border-bottom: 1px solid rgba(0, 217, 255, 0.2);
-    padding-bottom: 15px;
-    margin-bottom: 15px;
-}
-
-.section-title {
-    color: #fff;
-    font-size: 18px;
-    letter-spacing: 4px;
-    margin-bottom: 10px;
-}
-
-.overall-rating {
+/* ================= RESET & BAZA ================= */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Courier New", monospace;
+    background: #0a0e1a;
+    height: 100vh;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    color: white;
 }
 
-.big-score {
-    font-size: 32px;
-    color: #00ff88; /* Zielony dla wysokiej oceny */
-    font-weight: bold;
-    text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+/* Tło siatki/szumu (jak w oryginale) */
+body::before {
+    content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(0deg, transparent 24%, rgba(0, 217, 255, 0.1) 25%, transparent 26%, transparent 74%, rgba(0, 217, 255, 0.1) 75%, transparent 76%),
+                linear-gradient(90deg, transparent 24%, rgba(0, 217, 255, 0.1) 25%, transparent 26%, transparent 74%, rgba(0, 217, 255, 0.1) 75%, transparent 76%);
+    background-size: 50px 50px;
+    opacity: 0.4; z-index: -1;
 }
 
-.total-reviews {
-    font-size: 10px;
-    color: #66b3cc;
+/* ================= SCENA 3D & RZUTNIK ================= */
+.scene {
+    position: relative; width: 100%; height: 100%;
+    transform-style: preserve-3d; perspective: 1000px;
 }
 
-/* Kontener listy opinii */
-.reviews-list-container {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding-right: 5px; /* Miejsce na scrollbar */
+.projector-device {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) translateZ(-600px);
+    width: 200px; height: 140px;
+    background: #1e2838; border-radius: 20px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    border: 2px solid #2a3548;
+}
+.projector-lens {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 80px; height: 80px; background: radial-gradient(circle, #00d9ff, #001a33);
+    border-radius: 50%; box-shadow: 0 0 40px #00d9ff;
+    animation: pulseLens 3s infinite;
 }
 
-/* Stylizacja scrollbara */
-.reviews-list-container::-webkit-scrollbar { width: 4px; }
-.reviews-list-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
-.reviews-list-container::-webkit-scrollbar-thumb { background: #004d66; border-radius: 2px; }
+/* KARTA GŁÓWNA */
+.login-card {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(10, 25, 45, 0.85);
+    border: 1px solid #00d9ff;
+    border-radius: 15px;
+    box-shadow: 0 0 50px rgba(0, 217, 255, 0.2);
+    backdrop-filter: blur(10px);
+    /* Animacja wejścia */
+    animation: cardEntry 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    opacity: 0;
+}
 
-/* Pojedyncza karta opinii */
+/* SPECIFIC: LEGIT MODE (To naprawia małą kartę) */
+.legit-mode {
+    width: 90%; max-width: 500px;
+    height: 75vh; /* Stała wysokość */
+    display: flex; flex-direction: column;
+    padding: 20px;
+}
+
+.card-content {
+    height: 100%; display: flex; flex-direction: column;
+}
+
+.scan-line {
+    position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+    background: #00d9ff; opacity: 0.5;
+    animation: scan 4s linear infinite; pointer-events: none;
+}
+
+/* ================= ELEMENTY LEGITKI ================= */
+.legit-header { text-align: center; border-bottom: 1px solid rgba(0, 217, 255, 0.3); padding-bottom: 10px; margin-bottom: 10px; }
+.legit-header h2 { color: #fff; letter-spacing: 3px; font-size: 20px; text-shadow: 0 0 10px #00d9ff; }
+.score-box { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px; }
+.score-val { font-size: 24px; color: #00ff88; font-weight: bold; }
+.stars { color: #ffd700; letter-spacing: 2px; }
+
+/* Scrollowana lista */
+.reviews-scroll-area {
+    flex-grow: 1; overflow-y: auto;
+    padding-right: 5px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+/* Scrollbar custom */
+.reviews-scroll-area::-webkit-scrollbar { width: 5px; }
+.reviews-scroll-area::-webkit-scrollbar-thumb { background: #004d66; border-radius: 3px; }
+
+/* Pojedyncza opinia */
 .review-item {
-    background: rgba(0, 15, 30, 0.4);
-    border: 1px solid rgba(0, 217, 255, 0.1);
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
+    background: rgba(0,0,0,0.3);
+    border-left: 3px solid #00d9ff;
+    padding: 10px; margin-bottom: 10px;
     transition: 0.3s;
 }
-.review-item:hover {
-    border-color: rgba(0, 217, 255, 0.3);
-    background: rgba(0, 20, 40, 0.6);
-}
+.review-item:hover { background: rgba(0, 217, 255, 0.05); transform: translateX(5px); }
+.r-top { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px; }
+.r-nick { color: #00d9ff; font-weight: bold; }
+.r-stats { color: #888; }
+.r-text { font-size: 12px; color: #ddd; line-height: 1.4; }
 
-.review-top {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
+/* NAV PANEL (GÓRA) */
+.nav-overlay {
+    position: fixed; top: 0; left: 0; width: 100%;
+    padding: 15px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100;
 }
-
-.reviewer-name {
-    color: #00d9ff;
-    font-weight: bold;
-    font-size: 13px;
+.back-link {
+    color: #00d9ff; text-decoration: none; font-size: 12px; letter-spacing: 1px;
+    border: 1px solid rgba(0, 217, 255, 0.3); padding: 5px 10px; border-radius: 5px;
+    transition: 0.3s;
 }
+.back-link:hover { background: rgba(0, 217, 255, 0.2); box-shadow: 0 0 15px #00d9ff; }
+.auth-status { color: #00ff88; font-size: 11px; text-shadow: 0 0 5px #00ff88; }
 
-.reviewer-stats {
-    font-size: 9px;
-    color: #888;
-    display: flex;
-    gap: 10px;
+/* MODAL (NAPRAWA - domyślnie ukryty) */
+.modal-hidden { display: none; }
+#modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+    z-index: 9999; /* Zawsze na wierzchu */
+    align-items: center; justify-content: center;
 }
-.stat-badge {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2px 5px;
-    border-radius: 3px;
+.modal-window {
+    background: #0d121f; border: 1px solid #00d9ff;
+    padding: 20px; width: 90%; max-width: 400px;
+    border-radius: 10px; box-shadow: 0 0 50px rgba(0, 217, 255, 0.4);
+    display: flex; flex-direction: column; gap: 10px;
 }
-
-.review-stars { color: #ffd700; font-size: 12px; margin-bottom: 5px;}
-.review-text { color: #ddd; font-size: 11px; line-height: 1.4; margin-bottom: 10px; }
-
-/* Siatka zdjęć */
-.review-images {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-    gap: 5px;
-    margin-top: 10px;
+.modal-window input, .modal-window textarea {
+    background: rgba(255,255,255,0.05); border: 1px solid #333;
+    color: white; padding: 10px; border-radius: 5px; font-family: inherit;
 }
-
-.review-img-thumb {
-    width: 100%;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 4px;
-    border: 1px solid rgba(255,255,255,0.1);
-    cursor: pointer;
-    transition: 0.2s;
+.btn-green { background: #00ff88; border: none; padding: 8px; cursor: pointer; font-weight: bold; }
+.btn-red { background: transparent; border: 1px solid #ff4444; color: #ff4444; padding: 8px; cursor: pointer; }
+.glow-btn {
+    width: 100%; background: rgba(0, 217, 255, 0.1); border: 1px solid #00d9ff;
+    color: #00d9ff; padding: 8px; cursor: pointer; transition: 0.3s;
 }
-.review-img-thumb:hover { border-color: #00d9ff; }
+.glow-btn:hover { background: #00d9ff; color: #000; box-shadow: 0 0 20px #00d9ff; }
 
-/* Przycisk rozwijania */
-.expand-btn {
-    width: 100%;
-    background: rgba(0, 217, 255, 0.1);
-    border: none;
-    color: #00d9ff;
-    font-size: 10px;
-    padding: 5px;
-    cursor: pointer;
-    margin-top: 5px;
-}
-
-/* Modal */
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(5px);
-    z-index: 2000;
-    display: none; /* JS zmienia na flex */
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-box {
-    background: #0a111a;
-    border: 1px solid #00d9ff;
-    padding: 20px;
-    width: 90%;
-    max-width: 400px;
-    border-radius: 10px;
-    box-shadow: 0 0 50px rgba(0, 217, 255, 0.3);
-}
-
-.modal-box h3 { color: #00d9ff; margin-bottom: 15px; text-align: center; }
-.modal-box input[type="text"], .modal-box textarea {
-    width: 100%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid #333;
-    color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    font-family: inherit;
-}
-.modal-actions { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
-
-.confirm-btn { background: #00d9ff; color: #000; border: none; padding: 8px 20px; cursor: pointer; }
-.cancel-btn { background: transparent; border: 1px solid #ff4444; color: #ff4444; padding: 8px 20px; cursor: pointer; }
+/* Animacje */
+@keyframes pulseLens { 0%,100%{ opacity: 0.8; } 50%{ opacity: 1; box-shadow: 0 0 60px #00d9ff; } }
+@keyframes scan { 0%{ top:0%; opacity:0;} 10%{opacity:1;} 100%{top:100%; opacity:0;} }
+@keyframes cardEntry { 0%{ opacity:0; transform: translate(-50%, -50%) scale(0.5); filter: blur(10px); } 100%{ opacity:1; transform: translate(-50%, -50%) scale(1); filter: blur(0); } }
